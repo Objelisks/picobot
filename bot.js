@@ -32,6 +32,11 @@ var grammar = {
     'var': function() { return ['x','y','t'].random(); }
 };
 
+var translate = {
+    'Math.cos': 'cos',
+    'Math.sin': 'sin'
+};
+
 var genExpr = function() {
     var str = 'expr*expr*expr';
     var len = Math.floor(Math.random()*100+30);
@@ -106,3 +111,5 @@ var buf = encoder.out.getData();
 fs.writeFileSync('test' + i + '.gif', buf);
 
 }
+
+//var tweet = 'pset(x,y,' + doTranslate(expr) + ')';
