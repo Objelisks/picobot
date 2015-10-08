@@ -87,8 +87,7 @@ var colors = [
     'rgb(255,204,170)'
 ];
 
-var i;
-for(i=0; i<5; i++) {
+var doTheThing = function() {
 
 var encoder = new GIF(w, h);
 //encoder.createReadStream().pipe(fs.createWriteStream('test' + i + '.gif'));
@@ -117,9 +116,31 @@ for(t=0; t<20; t++) {
 
 encoder.finish();
 var buf = encoder.out.getData();
-fs.writeFileSync('test' + i + '.gif', buf);
-var tweet = doTranslate(expr) + ' #DZY';
-console.log(tweet);
+fs.writeFileSync('output.gif', buf);
+var tweetText = doTranslate(expr) + ' #DZY';
+
+client.post('media/upload', {media: buf}, function(error, media, response) {
+  if(!error) {
+    var status = {
+      status: tweetText,
+      media_ids: media.media_id_string
+    }
+
+    client.post('statuses/update', status, function(error, tweet, response) {
+      if(!error) {
+        console.log(tweet);
+      } else {
+        console.log(error);
+      }
+    });
+  } else {
+    console.log(error);
+  }
+});
 
 }
 
+var interval = 1000 * 60 * 60;
+
+setInterval(doTheThing, interval);
+doTheThing();
