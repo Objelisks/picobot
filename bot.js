@@ -140,7 +140,4 @@ client.post('media/upload', {media: buf}, function(error, media, response) {
 
 }
 
-var interval = 1000 * 60 * 60;
-
-setInterval(doTheThing, interval);
 doTheThing();
